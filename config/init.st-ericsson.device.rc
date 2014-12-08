@@ -1,0 +1,31 @@
+on boot
+    # Permissions for Liblights.
+    chown system system /sys/class/leds/red/delay_on
+    chown system system /sys/class/leds/red/delay_off
+    chown system system /sys/class/leds/red/delay_trigger
+    chown system system /sys/class/leds/green/delay_on
+    chown system system /sys/class/leds/green/delay_off
+    chown system system /sys/class/leds/green/delay_trigger
+    chown system system /sys/class/leds/blue/delay_on
+    chown system system /sys/class/leds/blue/delay_off
+    chown system system /sys/class/leds/blue/delay_trigger
+
+    # Permissions for NFC
+    chown nfc nfc /dev/pn544
+    chmod 0600 /dev/pn544
+
+    # Permissions for HDMI
+    chmod 666 /sys/devices/av8100_hdmi.3/disponoff
+    chmod 666 /sys/devices/av8100_hdmi.3/hdmisdtvswitch
+
+service hdmid /system/bin/hdmid
+    class main
+    socket hdmid stream 0660 system graphics
+    oneshot
+    
+service hdmiproxyd /system/bin/hdmiproxyd
+    class main
+    user system
+    group graphics
+    socket hdmid stream 0660 system system
+    socket hdmic stream 0660 system system
